@@ -4,16 +4,16 @@ export class CreateReservationDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(80)
-  purpose: string;
+  purpose?: string;
 
   @IsInt()
   @Min(1)
   @Max(20)
-  participants: number;
+  participants?: number;
 
   @IsInt()
   @Min(1)
-  roomId: number;
+  roomId?: number;
 }
 
   // TODO 1: Add the validators required by the examination. Do not convert body numbers.
