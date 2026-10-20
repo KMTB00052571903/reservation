@@ -19,6 +19,11 @@ describe('ReservationRulesService', () => {
     } as ReservationEntity;
 
     // TODO TEST 1: Check the real rule's rejection with ConflictException.
+    it('rejects a cancelled reservation', () => {
+  const reservation = { id: 1, purpose: 'Test', participants: 3, status: 'cancelled' } as any;
+
+  expect(() => service.ensureCanCancel(reservation)).toThrow(ConflictException);
+});
     throw new Error('TODO TEST 1: complete the cancellation rule test');
   });
 });

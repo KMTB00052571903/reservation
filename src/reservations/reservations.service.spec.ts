@@ -49,6 +49,22 @@ describe('ReservationsService', () => {
     const savedReservation = { ...reservation, status: 'cancelled' } as ReservationEntity;
 
     // TODO TEST 2: Arrange dependencies, call cancel(7), and check the required behavior.
+    it('cancels and saves the reservation', async () => {
+  const active = { id: 1, purpose: 'Test', participants: 3, status: 'active' } as any;
+  const cancelled = { ...active, status: 'cancelled' };
+
+  repositoryMock.findOne.mockResolvedValue(active);
+  rulesMock.ensureCanCancel.mockReturnValue(undefined);
+  repositoryMock.save.mockResolvedValue(cancelled);
+
+  const result = await service.cancel(1);
+
+  expect(rulesMock.ensureCanCancel).toHaveBeenCalledWith(active);
+  expect(repositoryMock.save).toHaveBeenCalledWith(
+    expect.objectContaining({ status: 'cancelled' }),
+  );
+  expect(result).toBe(cancelled);
+});
     throw new Error('TODO TEST 2: complete the successful cancellation test');
   });
 
@@ -63,6 +79,19 @@ describe('ReservationsService', () => {
 
     // TODO TEST 3: Make the mock rule reject this ACTIVE reservation, as requested.
     // Check the exception, the unchanged state, and the absence of a save() call.
+    it('does not modify or save when the rule rejects', async () => {
+  const active = { id: 1, purpose: 'Test', participants: 3, status: 'active' } as any;
+
+  repositoryMock.findOne.mockResolvedValue(active);
+  rulesMock.ensureCanCancel.mockImplementation(() => {
+    throw new ConflictException();
+  });
+
+  await expect(service.cancel(1)).rejects.toThrow(ConflictException);
+
+  expect(active.status).toBe('active');
+  expect(repositoryMock.save).not.toHaveBeenCalled();
+});
     throw new Error('TODO TEST 3: complete the rejected cancellation test');
   });
 });
