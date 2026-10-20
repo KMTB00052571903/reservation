@@ -24,3 +24,24 @@ Registrar el resultado de `npm test`.
 | 3. Si la regla simulada rechaza, conserva active y no guarda. | Pendiente |
 
 Resumen de ejecución: pendiente.
+# Resultados
+
+## Peticiones
+| # | Petición | Código obtenido |
+|---|----------|-----------------|
+| 1 | POST válido | 201 |
+| 2 | participants "3" | 400 |
+| 3 | propiedad extra status | 400 |
+| 4 | sala inexistente | 404 |
+| 5 | PATCH cancel activa | 200 |
+| 6 | PATCH cancel otra vez | 409 |
+| 7 | /abc/cancel | 400 |
+| 8 | ID inexistente | 404 |
+
+## npm test
+Tests: 3 passed, 3 total es el esperado
+//
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        1.486 s

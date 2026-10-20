@@ -5,6 +5,8 @@ import { RoomEntity } from '../rooms/entities/room.entity';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationEntity } from './entities/reservation.entity';
 import { ReservationRulesService } from './reservation-rules.service';
+import { beforeEach, describe, expect, it } from '@jest/globals';
+
 
 @Injectable()
 export class ReservationsService {
@@ -18,13 +20,11 @@ export class ReservationsService {
   ) {}
 
   async cancel(id: number): Promise<ReservationEntity> {
-    // TODO 2: Coordinate the operation according to the examination.
-    async cancel(id: number) {
-  const reservation = await this.findOne(id);
-  this.reservationRulesService.ensureCanCancel(reservation);
-  reservation.status = 'cancelled';
-  return this.reservationRepository.save(reservation);
-}  }
+    const reservation = await this.findOne(id);
+    this.reservationRulesService.ensureCanCancel(reservation);
+    reservation.status = 'cancelled';
+    return this.reservationsRepository.save(reservation);
+  }
 
   // The methods below are completed. Do not change them.
   async create(dto: CreateReservationDto): Promise<ReservationEntity> {
